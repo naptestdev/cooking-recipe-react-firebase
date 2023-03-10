@@ -12,6 +12,7 @@ import { IoSend } from "react-icons/io5";
 import { db } from "../service/firebase";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../store";
+import { imageProxy } from "../service/image";
 
 const Comments: FC = () => {
   const user = useAtomValue(userAtom);
@@ -56,6 +57,7 @@ const Comments: FC = () => {
       <h2 className="text-lg font-bold">Comments</h2>
       <form onSubmit={handleSubmit} className="relative rounded-md shadow-sm">
         <input
+          disabled={!user}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           required
@@ -63,7 +65,10 @@ const Comments: FC = () => {
           className="block w-full rounded-md border-0 py-1.5 pl-2 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           placeholder="Type what you think..."
         />
-        <button className="text-indigo-600 absolute top-1/2 right-2 -translate-y-1/2">
+        <button
+          disabled={!user}
+          className="text-indigo-600 absolute top-1/2 right-2 -translate-y-1/2"
+        >
           <IoSend />
         </button>
       </form>
@@ -72,7 +77,11 @@ const Comments: FC = () => {
 
       {data?.map((item) => (
         <div className="flex gap-2">
-          <img className="w-10 h-10 rounded-full" src={item.photoURL} alt="" />
+          <img
+            className="w-10 h-10 rounded-full"
+            src={imageProxy(item.photoURL)}
+            alt=""
+          />
           <div className="flex-grow">
             <h3 className="font-semibold">{item.displayName}</h3>
             <p className="whitespace-pre-wrap break-words">{item.content}</p>

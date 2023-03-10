@@ -6,7 +6,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { db } from "../service/firebase";
 import { FaHeart } from "react-icons/fa";
@@ -71,17 +71,29 @@ const Recipe: FC = () => {
               </div>
             </div>
             <div className="md:w-[55vw] flex-shrink-0">
-              <div className="flex items-center gap-4">
-                <h1 className="text-5xl font-bold">{data.title}</h1>
-                <button
-                  onClick={() => toggleLike()}
-                  className={`flex items-center gap-1 rounded-full border px-2 ${
-                    data.likes.includes(user?.uid) ? "border-red-600" : ""
-                  }`}
-                >
-                  <FaHeart className="text-red-600" />
-                  <span className="text-lg">{data.likes.length}</span>
-                </button>
+              <div className="flex items-center gap-4 justify-between">
+                <div className="flex items-center gap-4">
+                  <h1 className="text-5xl font-bold">{data.title}</h1>
+                  <button
+                    disabled={!user}
+                    onClick={() => toggleLike()}
+                    className={`flex items-center gap-1 rounded-full border px-2 ${
+                      data.likes.includes(user?.uid) ? "border-red-600" : ""
+                    }`}
+                  >
+                    <FaHeart className="text-red-600" />
+                    <span className="text-lg">{data.likes.length}</span>
+                  </button>
+                </div>
+
+                {user?.uid === data.createdBy && (
+                  <Link
+                    to={`/edit/${id}`}
+                    className="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500"
+                  >
+                    Edit
+                  </Link>
+                )}
               </div>
 
               <h2 className="text-2xl font-bold my-3">Instructions</h2>

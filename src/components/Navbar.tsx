@@ -5,6 +5,7 @@ import { userAtom } from "../store";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../service/firebase";
+import { imageProxy } from "../service/image";
 
 const Navbar: FC = () => {
   const user = useAtomValue(userAtom);
@@ -22,7 +23,7 @@ const Navbar: FC = () => {
             <div className="flex items-center gap-2">
               <img
                 className="w-8 h-8 rounded-full"
-                src={user.photoURL!}
+                src={imageProxy(user.photoURL!)}
                 alt=""
               />
               <span>{user.displayName}</span>
